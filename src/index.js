@@ -1,22 +1,25 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import App from './components/App';
+import ErrorBoundry from './components/error-boundry';
 import NewsApiServices from './services/news-api-services';
+import { NewsServiceProvider } from './components/news-service-context';
+import store from './store';
 
-const newApi = new NewsApiServices();
+const newsApiService = new NewsApiServices();
 
-const test = async () => {
-  const data = await newApi.getNews().then((data) => data.slice(0, 100));
-  const news = await newApi.getNewsById(25177045);
-  const news1 = await newApi.getNewsById(25177235);
-  const news2 = await newApi.getNewsById(25177226);
-  const news3 = await newApi.getNewsById(25177223);
-  const news4 = await newApi.getNewsById(25177216);
-  const news5 = await newApi.getNewsById(25177158);
-
-  console.log(data);
-  console.log(news);
-  console.log(news1);
-  console.log(news2);
-  console.log(news3);
-  console.log(news4);
-  console.log(news5);
-};
-test();
+ReactDOM.render(
+  <Provider store={store}>
+    <ErrorBoundry>
+      <NewsServiceProvider value={newsApiService}>
+        <Router>
+          <App />
+        </Router>
+      </NewsServiceProvider>
+    </ErrorBoundry>
+  </Provider>,
+  document.getElementById('root')
+);

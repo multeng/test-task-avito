@@ -1,0 +1,35 @@
+@import '~antd/dist/antd.css';
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__logo {
+    font-weight: bold;
+    font-size: 20px;
+    a {
+      color: #000;
+    }
+  }
+}
+
+.default-layout__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.back-to-top {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 4px;
+  background-color: #1088e9;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+}
+.ant-list{
+ width: 500px;
+ min-height: 600px;
+}

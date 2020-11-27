@@ -5,4 +5,17 @@ const newsLoaded = (newNews) => {
   };
 };
 
-export { newsLoaded };
+const newsRequested = () => {
+  return {
+    type: 'NEWS_REQUESTED',
+  };
+};
+
+const newsError = (error) => {
+  return {
+    type: 'NEWS_ERROR',
+    payload: error,
+  };
+};
+
+export { newsLoaded, newsRequested, newsError };
