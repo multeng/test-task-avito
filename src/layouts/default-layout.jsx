@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from 'antd';
+import NewsListButton from '../components/buttons/news-list-button';
+import { useParams } from 'react-router-dom';
 
 const { Header, Sider, Content, Footer } = Layout;
 
 const DefaultLayout = ({ children }) => {
+  const { id } = useParams();
+  console.log(id);
   return (
     <Layout className='default-layout'>
       <Header className='app-header' style={{ backgroundColor: '#fff' }}>
@@ -14,7 +18,9 @@ const DefaultLayout = ({ children }) => {
       </Header>
       <Content>
         <Layout style={{ backgroundColor: '#fff' }}>
-          <Sider style={{ width: '200px' }} theme={'light'}></Sider>
+          <Sider style={{ width: '200px' }} theme={'light'}>
+            <NewsListButton />
+          </Sider>
           <Content className='default-layout__content'>{children}</Content>
         </Layout>
       </Content>

@@ -6,19 +6,19 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'NEWS_REQUESTED':
+    case 'FETCH_NEWS_REQUEST':
       return {
         newsList: [],
         loading: true,
         error: null,
       };
-    case 'NEWS_LOADED':
+    case 'FETCH_NEWS_SUCCESS':
       return {
         newsList: action.payload,
         loading: false,
         error: null,
       };
-    case 'NEWS_ERROR': {
+    case 'FETCH_NEWS_FAILURE': {
       return {
         newsList: [],
         loading: false,
