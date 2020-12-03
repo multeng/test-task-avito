@@ -1,3 +1,36 @@
+const newsListLoaded = (newNews) => {
+  return {
+    type: 'FETCH_NEWS_LIST_SUCCESS',
+    payload: newNews,
+  };
+};
+
+const newsListRequested = () => {
+  return {
+    type: 'FETCH_NEWS_LIST_REQUEST',
+  };
+};
+
+const newsListError = (error) => {
+  return {
+    type: 'FETCH_NEWS_LIST_FAILURE',
+    payload: error,
+  };
+};
+
+const fetchNewsList = (newsServiсe, dispatch) => async () => {
+  try {
+    dispatch(newsListRequested());
+    const newsNumbers = await newsServiсe.getNews();
+    const newsObjects = await Promise.all(
+      newsNumbers.map(newsServiсe.getNewsById)
+    );
+    dispatch(newsListLoaded(newsObjects));
+  } catch (error) {
+    dispatch(newsListError(error));
+  }
+};
+
 const newsLoaded = (newNews) => {
   return {
     type: 'FETCH_NEWS_SUCCESS',
@@ -18,17 +51,14 @@ const newsError = (error) => {
   };
 };
 
-const fetchNews = (newsServise, dispacth) => async () => {
+const fetchNews = (newsServiсe, id, dispatch) => async () => {
   try {
-    dispacth(newsRequested());
-    const newsNumbers = await newsServise.getNews();
-    const newsObjects = await Promise.all(
-      newsNumbers.map(newsServise.getNewsById)
-    );
-    dispacth(newsLoaded(newsObjects));
+    dispatch(newsRequested());
+    const news = await newsServiсe.getNewsById(+id);
+    dispatch(newsLoaded(news));
   } catch (error) {
-    dispacth(newsError(error));
+    dispatch(newsError(error));
   }
 };
 
-export { fetchNews };
+export { fetchNewsList, fetchNews };

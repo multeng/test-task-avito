@@ -10,11 +10,11 @@ import {
 } from '@ant-design/icons';
 import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
-import { fetchNews } from '../../actions';
+import { fetchNewsList } from '../../actions';
 
-const NewsList = ({ newsList, loading, error, fetchNews }) => {
+const NewsList = ({ newsList, loading, error, fetchNewsList }) => {
   useEffect(() => {
-    fetchNews();
+    fetchNewsList();
   }, []);
 
   const IconText = ({ icon, text }) => (
@@ -75,16 +75,16 @@ NewsList.propTypes = {
   newsList: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  fetchNews: PropTypes.func.isRequired,
+  fetchNewsList: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ newsList, loading, error }) => {
+const mapStateToProps = ({ newsListReducer: { newsList, loading, error } }) => {
   return { newsList, loading, error };
 };
 
-const mapDispatchToProps = (dispacth, { newsServise }) => {
+const mapDispatchToProps = (dispatch, { newsServiсe }) => {
   return {
-    fetchNews: fetchNews(newsServise, dispacth),
+    fetchNewsList: fetchNewsList(newsServiсe, dispatch),
   };
 };
 

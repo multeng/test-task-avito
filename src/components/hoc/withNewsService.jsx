@@ -5,8 +5,8 @@ const WithNewsService = () => (Wrapped) => {
   return (props) => {
     return (
       <NewsServiceConsumer>
-        {(newsServise) => {
-          return <Wrapped {...props} newsServise={newsServise} />;
+        {(newsServiсe) => {
+          return <Wrapped {...props} newsServiсe={newsServiсe} />;
         }}
       </NewsServiceConsumer>
     );

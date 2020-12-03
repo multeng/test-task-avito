@@ -1,26 +1,61 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAsync } from 'react-use';
-import { Descriptions } from 'antd';
-import { Spin } from 'antd';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Descriptions, Result, Spin, Space } from 'antd';
+import { fetchNews } from '../../actions';
+import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
 
-const NewsInfo = (props) => {
-  const [news, setNews] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { newsServise, data } = props;
-  const { id } = useParams();
-
-  useAsync(async () => {
-    console.log(id);
+const NewsInfo = ({ news, loading, error, fetchNews }) => {
+  useEffect(() => {
+    fetchNews();
   }, []);
+  const { by, title, time, url, kids, score } = news;
   return (
-    <Descriptions title={'fake'}>
-      <Descriptions.Item label='UserName'>{'fake'}</Descriptions.Item>
-      <Descriptions.Item label='Rating'>{'fake'}</Descriptions.Item>
-      <Descriptions.Item label='Data'>{'fake'}</Descriptions.Item>
-    </Descriptions>
+    <DefaultLayout>
+      {loading ? (
+        <Spin size='large' />
+      ) : error ? (
+        <Result
+          status='warning'
+          title='There are some problems with your operation.'
+        />
+      ) : (
+        <Descriptions title={title}>
+          <Descriptions.Item label='Author'>{by}</Descriptions.Item>
+          <Descriptions.Item label='Rating'>{score}</Descriptions.Item>
+          <Descriptions.Item label='Data'>
+            {new Date(time * 1000).toString().slice(0, 24)}
+          </Descriptions.Item>
+          <Descriptions.Item label='Site'>
+            {
+              <a href={url} rel='noopener noreferrer' target='_blank'>
+                {url}
+              </a>
+            }
+          </Descriptions.Item>
+          {kids ? (
+            <Descriptions.Item label='Comments'>
+              {kids.length}
+            </Descriptions.Item>
+          ) : (
+            <Space></Space>
+          )}
+        </Descriptions>
+      )}
+    </DefaultLayout>
   );
 };
 
-export default WithNewsService()(NewsInfo);
+const mapStateToProps = ({ newsInfoReducer: { news, loading, error } }) => {
+  return { news, loading, error };
+};
+
+const mapDispatchToProps = (dispatch, { match, newsServiсe }) => {
+  return {
+    fetchNews: fetchNews(newsServiсe, match.params.id, dispatch),
+  };
+};
+
+export default WithNewsService()(
+  connect(mapStateToProps, mapDispatchToProps)(NewsInfo)
+);

@@ -1,33 +1,8 @@
-const initialState = {
-  newsList: [],
-  loading: true,
-  error: null,
-};
+import { combineReducers } from 'redux';
+import newsListReducer from './news-list';
+import newsInfoReducer from './news-info';
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'FETCH_NEWS_REQUEST':
-      return {
-        newsList: [],
-        loading: true,
-        error: null,
-      };
-    case 'FETCH_NEWS_SUCCESS':
-      return {
-        newsList: action.payload,
-        loading: false,
-        error: null,
-      };
-    case 'FETCH_NEWS_FAILURE': {
-      return {
-        newsList: [],
-        loading: false,
-        error: true,
-      };
-    }
-    default:
-      return state;
-  }
-};
-
-export default reducer;
+export default combineReducers({
+  newsListReducer,
+  newsInfoReducer,
+});

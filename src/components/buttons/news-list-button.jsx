@@ -2,18 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 import WithNewsService from '../hoc';
-import { fetchNews } from '../../actions';
-
+import { fetchNewsList } from '../../actions';
 
 const NewsListButton = (props) => {
-  const { fetchNews } = props;
+  const { fetchNewsList } = props;
 
-  return <Button onClick={() => fetchNews()}>Refresh News</Button>;
+  return (
+    <Button className='rnl' onClick={() => fetchNewsList()}>
+      Refresh News
+    </Button>
+  );
 };
 
-const mapDispatchToProps = (dispacth, { newsServise }) => {
+const mapDispatchToProps = (dispatch, { newsServiсe }) => {
   return {
-    fetchNews: fetchNews(newsServise, dispacth),
+    fetchNewsList: fetchNewsList(newsServiсe, dispatch),
   };
 };
 

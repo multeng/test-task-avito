@@ -29,7 +29,14 @@
   text-align: center;
   font-size: 14px;
 }
-.ant-list{
- width: 500px;
- min-height: 600px;
+.ant-list {
+  width: 500px;
+  min-height: 600px;
+}
+.ant-layout-sider-children {
+  display: flex;
+  justify-content: center;
+}
+.rnl {
+  margin-top: 30px;
 }
