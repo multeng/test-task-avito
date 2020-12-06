@@ -17,26 +17,14 @@
 .default-layout__content {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-.back-to-top {
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 4px;
-  background-color: #1088e9;
-  color: #fff;
-  text-align: center;
-  font-size: 14px;
-}
-.ant-list {
-  width: 500px;
-  min-height: 600px;
+  flex-direction: column;
 }
 .ant-layout-sider-children {
   display: flex;
   justify-content: center;
 }
 .rnl {
+  display: flex;
+  flex-direction: column;
   margin-top: 30px;
 }

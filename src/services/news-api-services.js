@@ -10,7 +10,7 @@ export default class NewsApiServices {
   };
   getNewsById = async (id) => {
     const { data: news, status } = await axios.get(
-      `${API_URL}item/${id}.json?print=pretty`
+      `${API_URL}item/${id}.json`
     );
     return status === 200 && news ? news : null;
   };

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { List, Space, BackTop, Result } from 'antd';
+import { List, Space, Result } from 'antd';
 import PropTypes from 'prop-types';
 import {
   StarOutlined,
   AppstoreAddOutlined,
-  UpOutlined,
+  CommentOutlined,
 } from '@ant-design/icons';
 import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
@@ -32,40 +32,46 @@ const NewsList = ({ newsList, loading, error, fetchNewsList }) => {
           title='There are some problems with your operation.'
         />
       ) : (
-        <>
-          <List
-            loading={loading}
-            itemLayout='vertical'
-            bordered={true}
-            dataSource={newsList}
-            size={'small'}
-            renderItem={(item) => (
-              <List.Item
-                key={item.id}
-                actions={[
+        <List
+          style={{ width: '600px' }}
+          pagination={{
+            pageSize: 6,
+          }}
+          loading={loading}
+          itemLayout='vertical'
+          bordered={true}
+          dataSource={newsList}
+          size={'small'}
+          renderItem={(item) => (
+            <List.Item
+              key={item.id}
+              actions={[
+                <IconText
+                  icon={StarOutlined}
+                  text={item.score}
+                  key='list-vertical-star-o'
+                />,
+                <IconText
+                  icon={AppstoreAddOutlined}
+                  text={new Date(item.time * 1000).toString().slice(0, 24)}
+                  key='list-vertical-message'
+                />,
+                item.kids ? (
                   <IconText
-                    icon={StarOutlined}
-                    text={item.score}
-                    key='list-vertical-star-o'
-                  />,
-                  <IconText
-                    icon={AppstoreAddOutlined}
-                    text={new Date(item.time * 1000).toString().slice(0, 24)}
+                    icon={CommentOutlined}
+                    text={item.kids.length}
                     key='list-vertical-message'
-                  />,
-                ]}
-              >
-                <List.Item.Meta
-                  title={<Link to={`/news/${item.id}`}>{item.title}</Link>}
-                  description={item.by}
-                />
-              </List.Item>
-            )}
-          />
-          <BackTop>
-            <UpOutlined className='back-to-top' />
-          </BackTop>
-        </>
+                  />
+                ) : null,
+              ]}
+            >
+              <List.Item.Meta
+                title={<Link to={`/news/${item.id}`}>{item.title}</Link>}
+                description={item.by}
+              />
+            </List.Item>
+          )}
+        />
       )}
     </DefaultLayout>
   );

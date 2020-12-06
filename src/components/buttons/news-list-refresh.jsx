@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import WithNewsService from '../hoc';
 import { fetchNewsList } from '../../actions';
 
-const NewsListButton = (props) => {
+const NewsListRefreshButton = (props) => {
   const { fetchNewsList } = props;
 
   return (
@@ -21,5 +21,5 @@ const mapDispatchToProps = (dispatch, { newsServiсe }) => {
 };
 
 export default WithNewsService()(
-  connect(null, mapDispatchToProps)(NewsListButton)
+  connect(null, mapDispatchToProps)(NewsListRefreshButton)
 );

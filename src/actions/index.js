@@ -51,7 +51,7 @@ const newsError = (error) => {
   };
 };
 
-const fetchNews = (newsServiсe, id, dispatch) => async () => {
+const fetchNews = async (newsServiсe, id, dispatch) => {
   try {
     dispatch(newsRequested());
     const news = await newsServiсe.getNewsById(+id);
