@@ -27,13 +27,12 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: false,
       };
-    case 'FETCH_NEWS_FAILURE': {
+    case 'FETCH_NEWS_FAILURE':
       return {
         news: defaultNews,
         loading: false,
         error: true,
       };
-    }
     default:
       return state;
   }

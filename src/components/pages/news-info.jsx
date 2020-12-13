@@ -5,7 +5,7 @@ import { Descriptions, Result, Spin } from 'antd';
 import { fetchNews } from '../../actions';
 import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
-import Comments from './comments';
+import CommentsList from './comments';
 
 const NewsInfo = ({ news, loading, error, fetchData }) => {
   const { id } = useParams();
@@ -43,7 +43,7 @@ const NewsInfo = ({ news, loading, error, fetchData }) => {
           ) : null}
         </Descriptions>
       )}
-      <Comments commentsId={kids} />
+      <CommentsList commentsId={kids} />
     </DefaultLayout>
   );
 };
