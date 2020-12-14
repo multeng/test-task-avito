@@ -70,7 +70,6 @@ const fetchComments = async (newsServiсe, id, dispatch) => {
   try {
     dispatch(commentsRequested());
     const news = await newsServiсe.getNewsById(+id);
-    console.log(news);
     const getData = async (kids) => {
       const data = await Promise.all(
         kids.map(async (el) => {
@@ -83,8 +82,10 @@ const fetchComments = async (newsServiсe, id, dispatch) => {
       );
       return data;
     };
-    const comments = await getData(news.kids);
-    dispatch(commentsLoaded(comments));
+    if (news.kids) {
+      const comments = await getData(news.kids);
+      dispatch(commentsLoaded(comments));
+    }
   } catch (error) {
     dispatch(commentsError(error));
   }
