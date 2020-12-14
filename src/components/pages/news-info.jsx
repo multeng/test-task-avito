@@ -1,23 +1,38 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Descriptions, Result, Spin } from 'antd';
-import { fetchNews } from '../../actions';
+import { Descriptions, Result, Spin, PageHeader } from 'antd';
+import { fetchNews, fetchComments } from '../../actions';
 import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
 import CommentsList from './comments';
 
-const NewsInfo = ({ news, loading, error, fetchData }) => {
+const NewsInfo = ({
+  news,
+  loading,
+  error,
+  commentsLoading,
+  comments,
+  commentsError,
+  fetchNewsData,
+  fetchCommentsData,
+}) => {
   const { id } = useParams();
+
   useEffect(() => {
-    fetchData(id);
+    fetchNewsData(id);
+    fetchCommentsData(id);
+    const interval = setInterval(() => {
+      fetchCommentsData(id);
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
   const { by, title, time, url, kids, score } = news;
   return (
     <DefaultLayout>
       {loading ? (
         <Spin size='large' />
-      ) : error ? (
+      ) : error || commentsError ? (
         <Result
           status='warning'
           title='There are some problems with your operation.'
@@ -43,18 +58,42 @@ const NewsInfo = ({ news, loading, error, fetchData }) => {
           ) : null}
         </Descriptions>
       )}
-      <CommentsList commentsId={kids} />
+      {kids && kids.length > 0 ? (
+        <>
+          <PageHeader
+            title='Comments'
+            style={{ display: 'flex', justifyContent: 'center' }}
+          />
+          {commentsLoading ? (
+            <Spin size='large' />
+          ) : (
+            <CommentsList comments={comments} />
+          )}
+        </>
+      ) : null}
     </DefaultLayout>
   );
 };
 
-const mapStateToProps = ({ newsInfoReducer: { news, loading, error } }) => {
-  return { news, loading, error };
+const mapStateToProps = ({
+  newsInfoReducer: {
+    news,
+    loading,
+    error,
+    comments,
+    commentsLoading,
+    commentsError,
+  },
+}) => {
+  return { news, loading, error, comments, commentsLoading, commentsError };
 };
 
 const mapDispatchToProps = (dispatch, { newsServiсe }) => ({
-  fetchData(id) {
+  fetchNewsData(id) {
     fetchNews(newsServiсe, id, dispatch);
+  },
+  fetchCommentsData(id) {
+    fetchComments(newsServiсe, id, dispatch);
   },
 });
 

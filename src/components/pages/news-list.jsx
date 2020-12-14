@@ -12,9 +12,13 @@ import DefaultLayout from '../../layouts/default-layout';
 import WithNewsService from '../hoc';
 import { fetchNewsList } from '../../actions';
 
-const NewsList = ({ newsList, loading, error, fetchNewsList }) => {
+const NewsList = ({ newsList, loading, error, interval, fetchNewsList }) => {
   useEffect(() => {
     fetchNewsList();
+    const interval = setInterval(() => {
+      fetchNewsList();
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const IconText = ({ icon, text }) => (

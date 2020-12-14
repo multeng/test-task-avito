@@ -11,10 +11,9 @@ const newsListRequested = () => {
   };
 };
 
-const newsListError = (error) => {
+const newsListError = () => {
   return {
     type: 'FETCH_NEWS_LIST_FAILURE',
-    payload: error,
   };
 };
 
@@ -44,11 +43,51 @@ const newsRequested = () => {
   };
 };
 
-const newsError = (error) => {
+const newsError = () => {
   return {
     type: 'FETCH_NEWS_FAILURE',
-    payload: error,
   };
+};
+
+const commentsRequested = () => {
+  return {
+    type: 'FETCH_COMMENTS_REQUEST',
+  };
+};
+const commentsLoaded = (comments) => {
+  return {
+    type: 'FETCH_COMMENTS_SUCCESS',
+    payload: comments,
+  };
+};
+const commentsError = () => {
+  return {
+    type: 'FETCH_COMMENTS_FAILURE',
+  };
+};
+
+const fetchComments = async (newsServiсe, id, dispatch) => {
+  try {
+    dispatch(commentsRequested());
+    const news = await newsServiсe.getNewsById(+id);
+    console.log(news);
+    const getData = async (kids) => {
+      const data = await Promise.all(
+        kids.map(async (el) => {
+          const commentObject = await newsServiсe.getNewsById(el);
+          if (commentObject.kids) {
+            commentObject.kids = await getData(commentObject.kids);
+          }
+          return commentObject;
+        })
+      );
+      return data;
+    };
+    const comments = await getData(news.kids);
+    dispatch(commentsLoaded(comments));
+  } catch (error) {
+    dispatch(commentsError(error));
+  }
 };
 
 const fetchNews = async (newsServiсe, id, dispatch) => {
@@ -61,4 +100,4 @@ const fetchNews = async (newsServiсe, id, dispatch) => {
   }
 };
 
-export { fetchNewsList, fetchNews };
+export { fetchNewsList, fetchNews, fetchComments };

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useAsync } from 'react-use';
-import { Comment, Spin } from 'antd';
+import { Comment } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import WithNewsService from '../hoc';
 
@@ -56,32 +55,8 @@ const CommentItem = ({ by, text, time, kids = [] }) => {
   );
 };
 
-const CommentsList = ({ commentsId, newsServiсe }) => {
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [comments, setComments] = useState([]);
-  const getData = async (kids) => {
-    const data = await Promise.all(
-      kids.map(async (el) => {
-        const commentObject = await newsServiсe.getNewsById(el);
-        if (commentObject.kids) {
-          commentObject.kids = await getData(commentObject.kids);
-        }
-        return commentObject;
-      })
-    );
-    setLoadingComments(false);
-    return data;
-  };
-
-  useAsync(async () => {
-    const fetchedComments = await getData(commentsId);
-    setComments(fetchedComments);
-  }, [commentsId]);
-  return loadingComments ? (
-    <div style={{ width: 100, height: 100 }}>
-      <Spin tip='Loading...' size='large' />
-    </div>
-  ) : (
+const CommentsList = ({ comments }) => {
+  return (
     <>
       {comments.map((el) => (
         <CommentItem key={el.id} {...el} />
